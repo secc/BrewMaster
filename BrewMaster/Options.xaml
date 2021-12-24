@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BrewMaster.Options"
+    NavigationPage.HasNavigationBar="false">
+    <ContentPage.Content>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="#ece0d1">
+            <StackLayout WidthRequest="320" HorizontalOptions="Center">
+                <Label Text="Select Option After Starting Coffee Maker" FontFamily="Futura" FontSize="20" FontAttributes="Bold"
+                       TextColor="#38220f" HorizontalTextAlignment="Center" Margin="10"/>
+                <Button x:Name="btnFull" Text="Full Pot Started" BorderColor="#38220f" BorderWidth="3"
+                        HorizontalOptions="Center" BackgroundColor="#634832" TextColor="#ece0d1"
+                        WidthRequest="300" HeightRequest="70" FontSize="20" FontAttributes="Bold"
+                        FontFamily="Futura" Clicked="btnFull_Clicked"/>
+
+                <Button x:Name="btnHalf" Text="Half Pot Started" BorderColor="#38220f" BorderWidth="3"
+                        HorizontalOptions="Center" BackgroundColor="#634832" TextColor="#ece0d1"
+                        WidthRequest="300" HeightRequest="70" FontSize="20" FontAttributes="Bold"
+                        FontFamily="Futura" Clicked="btnHalf_Clicked"/>
+
+                 <Button x:Name="btnCancel" Text="Cancel" BorderColor="#38220f" BorderWidth="3" Margin="0,20,0,0"
+                        HorizontalOptions="Center" BackgroundColor="#634832" TextColor="#ece0d1"
+                        WidthRequest="300" HeightRequest="50" FontSize="20" FontAttributes="Bold"
+                        FontFamily="Futura" Clicked="btnCancel_Clicked"/>
+            </StackLayout>
+            <StackLayout WidthRequest="250" VerticalOptions="Center"
+                         HorizontalOptions="CenterAndExpand">
+                <Label HorizontalTextAlignment="Center" Text="Coffee was last brewed:" FontFamily="Futura"/>
+                <Label HorizontalTextAlignment="Center" Margin="0,-10,0,15"
+                       Text="{Binding BrewDateTime, StringFormat='{0:MMM d, yyyy h:mm tt}'}" FontFamily="Futura" FontAttributes="Italic"/>
+                <Image Source="QRCode" Aspect="AspectFit" HeightRequest="200" WidthRequest="200" />
+                <Label HorizontalTextAlignment="Center" Text="Scan for App Information" FontFamily="Futura"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
