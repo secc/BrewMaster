@@ -6,7 +6,7 @@
     NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="#ece0d1">
-            <StackLayout WidthRequest="320" HorizontalOptions="Center">
+            <StackLayout WidthRequest="320" HorizontalOptions="Center" Margin="20,0,0,0">
                 <Label Text="Select Option After Starting Coffee Maker" FontFamily="Futura" FontSize="20" FontAttributes="Bold"
                        TextColor="#38220f" HorizontalTextAlignment="Center" Margin="10"/>
                 <Button x:Name="btnFull" Text="Full Pot Started" BorderColor="#38220f" BorderWidth="3"
