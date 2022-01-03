@@ -195,3 +195,31 @@ FakesAssemblies/
 .vscode/settings.json
 
 .DS_Store
+
+
+# Mobile.BuildTools
+appsettings.json
+appsettings.*.json
+
+
+# Mobile.BuildTools
+appsettings.json
+appsettings.*.json
+
+
+# Mobile.BuildTools
+appsettings.json
+appsettings.*.json
+
+
+# Mobile.BuildTools
+appsettings.json
+appsettings.*.json
+
+
+# Mobile.BuildTools
+appsettings.json
+appsettings.*.json
+
+#Azure Publish XML
+*.pubxml
