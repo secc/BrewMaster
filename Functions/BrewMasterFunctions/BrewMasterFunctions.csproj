@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AzureFunctionsVersion>v3</AzureFunctionsVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.1.0" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.5.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.22" />
+    <PackageReference Include="AzureFunctions.Extensions.DependencyInjection" Version="1.1.3" />
+    <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.22" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Microsoft.Azure.WebJobs.Extensions.ServiceBus" />
+    <None Remove="Azure.Messaging.ServiceBus" />
+    <None Remove="Contracts\" />
+    <None Remove="Model\" />
+    <None Remove="Utilities\" />
+    <None Remove="Microsoft.EntityFrameworkCore.Cosmos" />
+    <None Remove="Data\" />
+    <None Remove="Startup\" />
+    <None Remove="AzureFunctions.Extensions.DependencyInjection" />
+    <None Remove="Microsoft.Azure.Functions.Extensions" />
+    <None Remove="Microsoft.Extensions.DependencyInjection" />
+    <None Remove="Functions\" />
+    <None Remove="Attributes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="Model\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Data\" />
+    <Folder Include="Startup\" />
+    <Folder Include="Functions\" />
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+</Project>
