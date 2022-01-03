@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Timers;
+using BrewMaster.Messaging;
 using Xamarin.Forms;
 
 namespace BrewMaster.ViewModels
@@ -21,27 +22,31 @@ namespace BrewMaster.ViewModels
             timer.Start();
 
             Current = this;
+
+            this.SendEvent(BrewMasterEventType.NoEvent);
         }
 
 
         public void StartFullBrew()
         {
-            startBrew(TimeSpan.FromMinutes(10));
+            StartBrew(TimeSpan.FromMinutes(10));
+            this.SendEvent(BrewMasterEventType.BrewStart);
         }
 
         public void StartHalfBrew()
         {
-            startBrew(TimeSpan.FromMinutes(1));
+            StartBrew(TimeSpan.FromMinutes(1));
+            this.SendEvent(BrewMasterEventType.BrewStart);
         }
 
-        private void startBrew(TimeSpan brewLength)
+        private void StartBrew(TimeSpan brewLength)
         {
             HasFinishedBrewing = false;
-            brewInitialization = DateTime.Now;
+            BrewStartDateTime = DateTime.Now;
             BrewDateTime = DateTime.Now + brewLength;
         }
 
-        private DateTime brewInitialization = DateTime.Now;
+        public DateTime BrewStartDateTime { get; set; }
 
 
         private void TimerElapsed(Object source, ElapsedEventArgs e)
@@ -109,7 +114,7 @@ namespace BrewMaster.ViewModels
             var days = Math.Floor(diff.TotalDays);
             if (days > 0)
             {
-                var dayText =  days > 1 ? "days":"day";
+                var dayText = days > 1 ? "days" : "day";
                 CoffeeAge = $"{days} {dayText}";
             }
             else
@@ -122,6 +127,7 @@ namespace BrewMaster.ViewModels
         private void HandleFinishedBrewing()
         {
             HasFinishedBrewing = true;
+            this.SendEvent(BrewMasterEventType.BrewComplete);
         }
 
         private double dropLeft = 0;
@@ -154,7 +160,7 @@ namespace BrewMaster.ViewModels
             }
 
             var t = new Thickness(0, 0, 0, 0);
-            var total = (BrewDateTime - brewInitialization).TotalMilliseconds;
+            var total = (BrewDateTime - BrewStartDateTime).TotalMilliseconds;
             var remaining = (BrewDateTime - DateTime.Now).TotalMilliseconds;
 
             if (total == 0)
@@ -167,13 +173,13 @@ namespace BrewMaster.ViewModels
             t.Top = percent * 3.3;
 
             var ms = DateTime.Now.Millisecond;
-            var left = ms ;
+            var left = ms;
             if (DateTime.Now.Second % 2 == 0)
             {
                 left = 1000 - left;
             }
 
-            t.Left = -left*2;
+            t.Left = -left * 2;
             t.Top = Math.Max(-10, t.Top);
             BrewLocation = t;
         }

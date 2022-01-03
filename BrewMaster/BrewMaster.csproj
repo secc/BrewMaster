@@ -13,11 +13,19 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Utilities\" />
+    <None Remove="Azure.Messaging.ServiceBus" />
+    <None Remove="Messaging\" />
+    <None Remove="Dependancies\" />
+    <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
+    <Folder Include="Messaging\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>

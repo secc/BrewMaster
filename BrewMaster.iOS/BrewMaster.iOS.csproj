@@ -61,6 +61,7 @@
     <MtouchArch>ARM64</MtouchArch>
     <CodesignKey>iPhone Developer</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -68,6 +69,7 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\IDevice.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -131,5 +133,6 @@
     <Folder Include="Assets.xcassets\BackgroundAnim.imageset\" />
     <Folder Include="Assets.xcassets\Drop.imageset\" />
     <Folder Include="Assets.xcassets\QRCode.imageset\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>
