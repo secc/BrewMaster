@@ -10,7 +10,7 @@ namespace BrewMasterWeb.Utilities
             _name = name;
         }
 
-        public string AuthenticationType => "RockRMS";
+        public string AuthenticationType => "Cookie";
 
         public bool IsAuthenticated => true;
 

@@ -1,5 +1,8 @@
 ﻿class CustomCoffeeMaker extends HTMLElement {
     connectedCallback() {
+        var personid = this.getAttribute("data-personid")l;
+        DoSomthingSpecialForPerson(personid);
+
         this.innerHTML = `<div id="app">
                             <v-app>
                                 <v-main>
@@ -29,7 +32,7 @@
     }
 
     GetContent(el) {
-        $.getJSON("https://brewmasterweb.azurewebsites.net/api/coffeemakers", function (data) {
+        $.getJSON("https://brewmasterweb.azurewebsites.net/api/coffeemakers?personid=1", function (data) {
             data = data[0];
             var template = `<div id="app">
                             <v-app>

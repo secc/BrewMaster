@@ -11,5 +11,6 @@ namespace BrewMasterWeb.Authentication
     {
         IActionResult RedirectToIdP();
         Task<bool> Authenticate(HttpContext httpContext);
+        Task<RockPerson> GetRockPersonAsync(HttpContext httpContext);
     }
 }

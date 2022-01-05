@@ -33,8 +33,8 @@ namespace BrewMasterWeb
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/login";
-                    options.LogoutPath = "/logout";
+                    options.LoginPath = "/auth/login";
+                    options.LogoutPath = "/auth/logout";
                 });
 
             
@@ -45,9 +45,6 @@ namespace BrewMasterWeb
                 options.AddPolicy(ClaimsPolicies.User, policy => policy.RequireClaim("Role", ClaimsRoles.User, ClaimsRoles.Administrator));
                 options.AddPolicy(ClaimsPolicies.Administrator, policy => policy.RequireClaim("Role", ClaimsRoles.Administrator));
             });
-
-            
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +62,7 @@ namespace BrewMasterWeb
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

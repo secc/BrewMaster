@@ -28,10 +28,7 @@ namespace BrewMasterWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var auth = await HttpContext.AuthenticateAsync();
-            var claims = new List<Claim>
-            {
-                new Claim("Role", "Admin")
-            };
+           
             return Json("test");
         }
 
@@ -46,7 +43,13 @@ namespace BrewMasterWeb.Controllers
             
             bool success = await _rockAuthService.Authenticate(HttpContext);
 
-            return Json("Success"); ;
+            return Redirect("/") ;
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
         }
 
     }

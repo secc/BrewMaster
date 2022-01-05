@@ -47,6 +47,24 @@ namespace BrewMasterWeb.Authentication
             return false;
         }
 
+        public async Task<RockPerson> GetRockPersonAsync(HttpContext httpContext)
+        {
+            var auth = await httpContext.AuthenticateAsync();
+            var name = auth?.Principal?.Identity?.Name;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("Authorization-Token", _apiKey);
+            var response = await httpClient.GetAsync("https://rock.secc.org/api/People/GetByPersonAliasId/" + name);
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<RockPerson>(content);
+        }
+
+
         private async Task AuthenticateUser(RockPerson person, HttpContext httpContext)
         {
             var template = $@"{{% assign groupMembers = {person.Id} | PersonById | Groups: '1', 'Active'  -%}}
@@ -76,7 +94,7 @@ namespace BrewMasterWeb.Authentication
             }
 
             var identity = new RockIdentity(person.PrimaryAliasId.ToString());
-            await httpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(identity, claims)));
+            await httpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(identity, claims, "Cookie", "user", "role")));
         }
 
         private async Task<RockPerson> GetPerson(string accessToken)
