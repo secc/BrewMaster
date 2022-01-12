@@ -27,9 +27,6 @@ namespace BrewMaster.Messaging
             var platform = DependencyService.Get<IDevice>();
             string deviceId = platform.GetDeviceName();
 
-            var connectionString = Environment.GetEnvironmentVariable(MessagingConstants.BREWEVENT_CONNECTION_STRING);
-
-
             if (connectionString is null)
             {
                 return false;
