@@ -38,7 +38,7 @@ namespace BrewMaster.Messaging
             await sender.SendMessageAsync(new ServiceBusMessage(payload));
 #else
             try {
-                await sender.SendMessageAsync(new ServiceBusMessage( name ));
+                await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
             } catch {}
             
 #endif
