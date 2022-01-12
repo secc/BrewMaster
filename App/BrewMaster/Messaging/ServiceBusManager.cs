@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using BrewMaster.Interfaces;
 using BrewMaster.ViewModels;
@@ -10,7 +11,7 @@ namespace BrewMaster.Messaging
 {
     public static class ServiceBusManager
     {
-        public static async void SendEvent(this MainPageViewModel mainPageViewModel, BrewMasterEventType brewMasterEventType)
+        public static async Task<bool> SendEvent(this MainPageViewModel mainPageViewModel, BrewMasterEventType brewMasterEventType)
         {
             var platform = DependencyService.Get<IDevice>();
             string deviceId = platform.GetDeviceName();
@@ -19,7 +20,7 @@ namespace BrewMaster.Messaging
 
             if (connectionString is null)
             {
-                throw new Exception($"Please set environmental variable {MessagingConstants.BREWEVENT_CONNECTION_STRING}");
+                return false;
             }
 
             var brewEvent = new BrewMasterEvent
@@ -39,9 +40,10 @@ namespace BrewMaster.Messaging
 #else
             try {
                 await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
-            } catch {}
+            } catch { return false;}
             
 #endif
+            return true;
         }
     }
 }

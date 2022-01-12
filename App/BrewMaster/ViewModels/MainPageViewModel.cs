@@ -23,7 +23,11 @@ namespace BrewMaster.ViewModels
 
             Current = this;
 
-            this.SendEvent(BrewMasterEventType.NoEvent);
+            var status = this.SendEvent(BrewMasterEventType.NoEvent).GetAwaiter().GetResult();
+            if ( !status )
+            {
+                Current.BrewDateTime = DateTime.Now.AddDays( -4 );
+            }
         }
 
 
