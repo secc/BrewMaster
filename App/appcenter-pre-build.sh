@@ -1,0 +1,1 @@
+sed -i -e "s/breweventConnectionString/$breweventConnectionString/g""  $APPCENTER_SOURCE_DIRECTORY/BrewMaster/Messaging/ServiceBusManger.cs

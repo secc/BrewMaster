@@ -1,22 +1,36 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using BrewMaster.Interfaces;
 using BrewMaster.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
-
+using YamlDotNet.RepresentationModel;
 
 namespace BrewMaster.Messaging
 {
     public static class ServiceBusManager
     {
+        private static string _connectionString;
+        private static string connectionString { get
+            {
+                if ( string.IsNullOrWhiteSpace( _connectionString) ){
+                    _connectionString = GetConnectionString();
+                }
+                return _connectionString;
+            }
+        }
+
+       
+
         public static async Task<bool> SendEvent(this MainPageViewModel mainPageViewModel, BrewMasterEventType brewMasterEventType)
         {
             var platform = DependencyService.Get<IDevice>();
             string deviceId = platform.GetDeviceName();
 
             var connectionString = Environment.GetEnvironmentVariable(MessagingConstants.BREWEVENT_CONNECTION_STRING);
+
 
             if (connectionString is null)
             {
@@ -45,5 +59,18 @@ namespace BrewMaster.Messaging
 #endif
             return true;
         }
+
+        private static string GetConnectionString()
+        {
+            //In testing add the connection string to the iOS environment variables. 
+            //For use the build script to replace the value
+
+#if DEBUG
+            return Environment.GetEnvironmentVariable( MessagingConstants.BREWEVENT_CONNECTION_STRING );
+#else
+            return MessagingConstants.BREWEVENT_CONNECTION_STRING;
+#endif
+        }
+
     }
 }
