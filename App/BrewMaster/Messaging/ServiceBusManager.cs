@@ -18,7 +18,8 @@ namespace BrewMaster.Messaging
             var platform = DependencyService.Get<IDevice>();
             string deviceId = platform.GetDeviceName();
 
-            if ( await GetConnectionString() is null )
+            var connectionString = await GetConnectionString();
+            if ( connectionString is null )
             {
                 return false;
             }
@@ -33,13 +34,13 @@ namespace BrewMaster.Messaging
 
             var payload = JsonConvert.SerializeObject( brewEvent );
 
-            var client = new ServiceBusClient( await GetConnectionString() );
+            var client = new ServiceBusClient( connectionString );
             var sender = client.CreateSender( "brewevent" );
 #if DEBUG
-            await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
+            sender.SendMessageAsync( new ServiceBusMessage( payload ) );
 #else
             try {
-                await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
+                sender.SendMessageAsync( new ServiceBusMessage( payload ) );
             } catch { return false;}
             
 #endif
@@ -48,14 +49,23 @@ namespace BrewMaster.Messaging
 
         private async static Task<string> GetConnectionString()
         {
-            if ( _connectionString is null )
+            try
             {
-                var fileManager = DependencyService.Get<IFileStorage>();
-                var configFile = await fileManager.ReadAsString( "config.json" );
-                var config = JsonConvert.DeserializeObject<Configuration>( configFile );
-                _connectionString = config.ServiceBusConnectionString;
+
+                if ( _connectionString is null )
+                {
+                    var fileManager = DependencyService.Get<IFileStorage>();
+                    var configFile = await fileManager.ReadAsString( "config.json" );
+                    var config = JsonConvert.DeserializeObject<Configuration>( configFile );
+                    _connectionString = config.ServiceBusConnectionString;
+                }
+                return _connectionString;
             }
-            return _connectionString;
+            catch ( Exception e )
+            {
+                await App.Current.MainPage.DisplayAlert( "error", e.Message, "ok" );
+            }
+            return null;
         }
 
     }
