@@ -10,7 +10,7 @@ namespace BrewMaster.Messaging
 {
     public static class ServiceBusManager
     {
-        private static string _connectionString;
+        private static string _connectionString = "Endpoint=sb://brewmaster.servicebus.windows.net/;SharedAccessKeyName=app;SharedAccessKey=PGAlcmLceUc1cO9vIiPFKSgJcEXRdCXlPncSAwPuHsY=;";
 
 
         public static async Task<bool> SendEvent( this MainPageViewModel mainPageViewModel, BrewMasterEventType brewMasterEventType )
