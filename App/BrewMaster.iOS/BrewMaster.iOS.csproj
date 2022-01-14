@@ -14,7 +14,7 @@
     <AssemblyName>BrewMaster.iOS</AssemblyName>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
-    <ProvisioningType>manual</ProvisioningType>
+    <ProvisioningType>automatic</ProvisioningType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,14 +71,12 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />
     <EnvironmentVariables>
-      <Variable name="breweventConnectionString" value="Endpoint=sb://brewmaster.servicebus.windows.net/;SharedAccessKeyName=app;SharedAccessKey=PGAlcmLceUc1cO9vIiPFKSgJcEXRdCXlPncSAwPuHsY=;" />
     </EnvironmentVariables>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IFileStorage.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <BundleResource Include="config.json" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />

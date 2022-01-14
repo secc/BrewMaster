@@ -20,7 +20,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>15.2</string>
+	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>BrewMaster</string>
 	<key>CFBundleIdentifier</key>
