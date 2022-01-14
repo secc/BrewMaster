@@ -26,6 +26,5 @@
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Messaging\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>
