@@ -16,34 +16,31 @@ namespace BrewMaster.ViewModels
 
         public MainPageViewModel()
         {
-            System.Timers.Timer timer = new System.Timers.Timer(23);
+            System.Timers.Timer timer = new System.Timers.Timer( 23 );
             timer.Elapsed += TimerElapsed;
             timer.AutoReset = true;
             timer.Start();
 
             Current = this;
 
-            var status = this.SendEvent(BrewMasterEventType.NoEvent).GetAwaiter().GetResult();
-            if ( !status )
-            {
-                Current.BrewDateTime = DateTime.Now.AddDays( -4 );
-            }
+            this.SendEvent( BrewMasterEventType.NoEvent );
+
         }
 
 
         public void StartFullBrew()
         {
-            StartBrew(TimeSpan.FromMinutes(10));
-            this.SendEvent(BrewMasterEventType.BrewStart);
+            StartBrew( TimeSpan.FromMinutes( 10 ) );
+            this.SendEvent( BrewMasterEventType.BrewStart );
         }
 
         public void StartHalfBrew()
         {
-            StartBrew(TimeSpan.FromMinutes(1));
-            this.SendEvent(BrewMasterEventType.BrewStart);
+            StartBrew( TimeSpan.FromMinutes( 1 ) );
+            this.SendEvent( BrewMasterEventType.BrewStart );
         }
 
-        private void StartBrew(TimeSpan brewLength)
+        private void StartBrew( TimeSpan brewLength )
         {
             HasFinishedBrewing = false;
             BrewStartDateTime = DateTime.Now;
@@ -53,20 +50,20 @@ namespace BrewMaster.ViewModels
         public DateTime BrewStartDateTime { get; set; }
 
 
-        private void TimerElapsed(Object source, ElapsedEventArgs e)
+        private void TimerElapsed( Object source, ElapsedEventArgs e )
         {
             var diff = e.SignalTime - BrewDateTime;
 
             var hasFinishedBrewing = diff >= TimeSpan.Zero;
-            if (hasFinishedBrewing && !HasFinishedBrewing)
+            if ( hasFinishedBrewing && !HasFinishedBrewing )
             {
                 HandleFinishedBrewing();
             }
 
-            SetBrewLocation(diff);
-            SetDropLocation(diff);
+            SetBrewLocation( diff );
+            SetDropLocation( diff );
 
-            if (diff > TimeSpan.FromHours(4))
+            if ( diff > TimeSpan.FromHours( 4 ) )
             {
                 IsOld = true;
                 IsFresh = false;
@@ -82,11 +79,11 @@ namespace BrewMaster.ViewModels
 
             diff = diff.Duration();
 
-            if (!hasFinishedBrewing)
+            if ( !hasFinishedBrewing )
             {
                 Status = "Brewing";
             }
-            else if (diff < TimeSpan.FromMinutes(30))
+            else if ( diff < TimeSpan.FromMinutes( 30 ) )
             {
                 Status = "FRESH!!";
             }
@@ -99,7 +96,7 @@ namespace BrewMaster.ViewModels
 
             var minutes = diff.Minutes.ToString();
 
-            while (minutes.Length < 2)
+            while ( minutes.Length < 2 )
             {
                 minutes = "0" + minutes;
             }
@@ -108,15 +105,15 @@ namespace BrewMaster.ViewModels
 
             var seconds = diff.Seconds.ToString();
 
-            while (seconds.Length < 2)
+            while ( seconds.Length < 2 )
             {
                 seconds = "0" + seconds;
             }
 
             Seconds = seconds;
 
-            var days = Math.Floor(diff.TotalDays);
-            if (days > 0)
+            var days = Math.Floor( diff.TotalDays );
+            if ( days > 0 )
             {
                 var dayText = days > 1 ? "days" : "day";
                 CoffeeAge = $"{days} {dayText}";
@@ -131,21 +128,21 @@ namespace BrewMaster.ViewModels
         private void HandleFinishedBrewing()
         {
             HasFinishedBrewing = true;
-            this.SendEvent(BrewMasterEventType.BrewComplete);
+            this.SendEvent( BrewMasterEventType.BrewComplete );
         }
 
         private double dropLeft = 0;
-        private void SetDropLocation(TimeSpan diff)
+        private void SetDropLocation( TimeSpan diff )
         {
-            if (diff >= TimeSpan.Zero)
+            if ( diff >= TimeSpan.Zero )
             {
-                DropLocation = new Thickness(-100, -100, 0, 0);
+                DropLocation = new Thickness( -100, -100, 0, 0 );
             }
 
-            var t = new Thickness(0, 0, 0, 0);
-            t.Top = (500 - (diff.Duration().TotalMilliseconds % 500)) - 100;
+            var t = new Thickness( 0, 0, 0, 0 );
+            t.Top = ( 500 - ( diff.Duration().TotalMilliseconds % 500 ) ) - 100;
 
-            if (t.Top < -50)
+            if ( t.Top < -50 )
             {
                 var random = new Random();
                 dropLeft = random.NextDouble() * 1100;
@@ -156,35 +153,35 @@ namespace BrewMaster.ViewModels
 
         }
 
-        private void SetBrewLocation(TimeSpan diff)
+        private void SetBrewLocation( TimeSpan diff )
         {
-            if (diff == TimeSpan.Zero)
+            if ( diff == TimeSpan.Zero )
             {
                 BrewLocation = new Thickness();
             }
 
-            var t = new Thickness(0, 0, 0, 0);
-            var total = (BrewDateTime - BrewStartDateTime).TotalMilliseconds;
-            var remaining = (BrewDateTime - DateTime.Now).TotalMilliseconds;
+            var t = new Thickness( 0, 0, 0, 0 );
+            var total = ( BrewDateTime - BrewStartDateTime ).TotalMilliseconds;
+            var remaining = ( BrewDateTime - DateTime.Now ).TotalMilliseconds;
 
-            if (total == 0)
+            if ( total == 0 )
             {
                 BrewLocation = t;
             }
 
-            var percent = ((double)remaining) / total * 100;
+            var percent = ( ( double ) remaining ) / total * 100;
 
             t.Top = percent * 3.3;
 
             var ms = DateTime.Now.Millisecond;
             var left = ms;
-            if (DateTime.Now.Second % 2 == 0)
+            if ( DateTime.Now.Second % 2 == 0 )
             {
                 left = 1000 - left;
             }
 
             t.Left = -left * 2;
-            t.Top = Math.Max(-10, t.Top);
+            t.Top = Math.Max( -10, t.Top );
             BrewLocation = t;
         }
 
@@ -198,7 +195,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _timeString = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimeString"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "TimeString" ) );
             }
         }
 
@@ -211,7 +208,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _negative = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Negative"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "Negative" ) );
             }
         }
 
@@ -223,7 +220,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _hours = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Hours"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "Hours" ) );
             }
         }
 
@@ -235,7 +232,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _minutes = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Minutes"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "Minutes" ) );
             }
         }
 
@@ -248,7 +245,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _seconds = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Seconds"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "Seconds" ) );
             }
         }
 
@@ -260,7 +257,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _isFresh = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsFresh"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "IsFresh" ) );
             }
         }
 
@@ -272,7 +269,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _isOld = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsOld"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "IsOld" ) );
             }
         }
 
@@ -284,7 +281,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _status = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Status"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "Status" ) );
             }
         }
 
@@ -296,7 +293,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _brewLocation = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BrewLocation"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "BrewLocation" ) );
             }
         }
 
@@ -308,7 +305,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _dropLocation = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DropLocation"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "DropLocation" ) );
             }
         }
 
@@ -320,7 +317,7 @@ namespace BrewMaster.ViewModels
             set
             {
                 _coffeeAge = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CoffeeAge"));
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "CoffeeAge" ) );
             }
         }
 
