@@ -21,6 +21,7 @@ namespace BrewMaster.Messaging
             var connectionString = await GetConnectionString();
             if ( connectionString is null )
             {
+                await App.Current.MainPage.DisplayAlert( "Connection String Error", "Could not load connection string", "ok" );
                 return false;
             }
 
@@ -33,7 +34,7 @@ namespace BrewMaster.Messaging
             };
 
             var payload = JsonConvert.SerializeObject( brewEvent );
-
+            await App.Current.MainPage.DisplayAlert( "connectionString", connectionString, "ok" );
             var client = new ServiceBusClient( connectionString );
             var sender = client.CreateSender( "brewevent" );
 #if DEBUG
