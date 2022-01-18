@@ -34,14 +34,14 @@ namespace BrewMaster.Messaging
             };
 
             var payload = JsonConvert.SerializeObject( brewEvent );
-            await App.Current.MainPage.DisplayAlert( "connectionString", connectionString, "ok" );
+            
             var client = new ServiceBusClient( connectionString );
             var sender = client.CreateSender( "brewevent" );
 #if DEBUG
-            sender.SendMessageAsync( new ServiceBusMessage( payload ) );
+            await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
 #else
             try {
-                sender.SendMessageAsync( new ServiceBusMessage( payload ) );
+                await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
             catch ( Exception e )
             {
                 await App.Current.MainPage.DisplayAlert( "error", e.Message, "ok" );
