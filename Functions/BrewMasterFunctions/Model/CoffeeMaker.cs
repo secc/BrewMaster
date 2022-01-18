@@ -9,7 +9,8 @@ namespace BrewMasterFunctions.Model
     {
         public string Id { get; set; }
         public string Name { get; set; } = "New Coffee Maker";
-        public DateTime LastStartDateTime { get; set; }
-        public DateTime LastCompeteDateTime { get; set; }
+        public DateTime? LastStartDateTime { get; set; }
+        public DateTime? LastCompeteDateTime { get; set; }
+        public bool IsPublic { get; set; } = false;
     }
 }

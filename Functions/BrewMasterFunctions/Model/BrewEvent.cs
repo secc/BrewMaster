@@ -11,8 +11,8 @@ namespace BrewMasterFunctions.Model
     {
         public string Id { get; set; }
         public string CoffeeMakerId { get; set; }
-        public DateTime StartDateTime { get; set; }
-        public DateTime CompleteDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
+        public DateTime? CompleteDateTime { get; set; }
         public BrewMasterEventType BrewMasterEventType { get; set; }
     }
 }

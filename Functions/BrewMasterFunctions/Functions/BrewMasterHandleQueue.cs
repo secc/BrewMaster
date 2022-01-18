@@ -6,7 +6,7 @@ using BrewMasterFunctions.Model;
 using BrewMasterFunctions.Utilities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BrewMasterFunctions.Functions
 {
@@ -25,17 +25,10 @@ namespace BrewMasterFunctions.Functions
             ILogger log
             )
         {
-            BrewMasterEvent brewMasterEvent = null;
-
-            try
-            {
-                brewMasterEvent = JsonConvert.DeserializeObject<BrewMasterEvent>(message);
-            }
-            catch (Exception e)
-            {
-                log.LogError(e, "Could not deserialize queue object: " + message);
-                return;
-            }
+            BrewMasterEvent brewMasterEvent;
+            
+                brewMasterEvent = JsonSerializer.Deserialize<BrewMasterEvent>( message );
+           
 
             if (brewMasterEvent == null)
             {

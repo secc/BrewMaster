@@ -223,3 +223,6 @@ appsettings.*.json
 
 #Azure Publish XML
 *.pubxml
+
+#Secrets config files
+config.json
