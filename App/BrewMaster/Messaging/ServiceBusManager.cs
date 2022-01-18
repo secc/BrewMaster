@@ -42,7 +42,10 @@ namespace BrewMaster.Messaging
 #else
             try {
                 sender.SendMessageAsync( new ServiceBusMessage( payload ) );
-            } catch { return false;}
+            catch ( Exception e )
+            {
+                await App.Current.MainPage.DisplayAlert( "error", e.Message, "ok" );
+            }
             
 #endif
             return true;
