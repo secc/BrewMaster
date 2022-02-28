@@ -6,28 +6,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BrewMasterWeb.Models;
-using BrewMasterWeb.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using BrewMasterWeb.Utilities;
+using SECC.Rock.Authentication;
+using SECC.Rock.Contracts;
+using SECC.Rock.OAuth;
+using SECC.Rock.Identity;
 
 namespace BrewMasterWeb.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IRockAuthService _rockAuthService;
+        private readonly IRockOAuthClient _rockOAuthClient;
 
-        public HomeController(ILogger<HomeController> logger, IRockAuthService rockAuthService)
+        public HomeController(ILogger<HomeController> logger, IRockOAuthClient rockOAuthClient)
         {
             _logger = logger;
-            _rockAuthService = rockAuthService;
+            _rockOAuthClient = rockOAuthClient;
         }
 
         
         public async Task<IActionResult> Index()
         {
-            RockPerson rockPerson = await _rockAuthService.GetRockPersonAsync(HttpContext);
+            RockPerson rockPerson = await _rockOAuthClient.GetRockPerson( HttpContext );
 
             if (rockPerson != null)
             {
@@ -38,7 +40,7 @@ namespace BrewMasterWeb.Controllers
             return View(rockPerson);
         }
 
-        [Authorize(ClaimsPolicies.Administrator)]
+        [Authorize(ClaimsPolicies.Edit)]
         public IActionResult Privacy()
         {
             return View();

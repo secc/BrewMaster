@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BrewMasterWeb.Data;
 using BrewMasterWeb.Models;
+using BrewMasterWeb.Services;
+using BrewMasterWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrewMasterWeb.Controllers
@@ -11,10 +13,10 @@ namespace BrewMasterWeb.Controllers
     public class APIController : Controller
     {
 
-        IContainerFactory _containerFactory;
-        public APIController(IContainerFactory containerFactory)
+        ICoffeeMakerService _coffeeMakerService;
+        public APIController( ICoffeeMakerService coffeeMakerService )
         {
-            _containerFactory = containerFactory;
+            _coffeeMakerService = coffeeMakerService;
         }
 
         public IActionResult Index()
@@ -24,11 +26,37 @@ namespace BrewMasterWeb.Controllers
 
         public async Task<IActionResult> CoffeeMakers()
         {
-            //Should make this more testable
-            var coffeeMakerService = _containerFactory.GetService<CoffeeMaker>();
-            var coffeeMakers = await coffeeMakerService.GetAllAsync("select * from c");
+            var coffeeMakers = await _coffeeMakerService.All();
+            return Json( coffeeMakers );
+        }
 
-            return Json(coffeeMakers.ToList());
+        public async Task<IActionResult> CoffeeMakersForPerson(string personToken )
+        {
+            List<CoffeeMakerPersonViewModel> coffeeMakers = await _coffeeMakerService.ForPerson( personToken );
+            return Json( coffeeMakers );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Subscribe( [FromForm] CoffeeMakerSubscribeViewModel makerSubscribe )
+        {
+            await _coffeeMakerService.Subscribe( makerSubscribe );
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Unsubscribe( [FromForm] CoffeeMakerSubscribeViewModel makerSubscribe )
+        {
+            await _coffeeMakerService.Unsubscribe( makerSubscribe );
+
+            return NoContent();
+        }
+
+        public async Task<IActionResult> CanAdministrate( string personToken )
+        {
+            bool canAdministrate = await _coffeeMakerService.CanAdministrate( personToken );
+
+            return Json( canAdministrate );
         }
     }
 }
