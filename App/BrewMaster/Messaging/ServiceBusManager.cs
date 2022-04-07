@@ -30,14 +30,14 @@ namespace BrewMaster.Messaging
                 BrewMasterEventType = brewMasterEventType,
                 CompleteDateTime = mainPageViewModel.BrewDateTime,
                 StartDateTime = mainPageViewModel.BrewStartDateTime,
-                DeviceId = deviceId
+                DeviceId = deviceId,
             };
 
             var payload = JsonConvert.SerializeObject( brewEvent );
             var client = new ServiceBusClient( connectionString );
             var sender = client.CreateSender( "brewevent" );
 #if DEBUG
-            sender.SendMessageAsync( new ServiceBusMessage( payload ) );
+            await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
 #else
             try {
                 sender.SendMessageAsync( new ServiceBusMessage( payload ) );

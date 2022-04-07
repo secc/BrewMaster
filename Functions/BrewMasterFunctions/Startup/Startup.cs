@@ -15,7 +15,6 @@ namespace BrewMasterFunctions.Startup
         {
 
             builder.Services.AddScoped<IContainerFactory, ContainerFactory>();
-           
 
         }
     }

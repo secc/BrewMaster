@@ -27,16 +27,15 @@ namespace BrewMaster.ViewModels
 
         }
 
-
         public void StartFullBrew()
         {
-            StartBrew( TimeSpan.FromMinutes( 10 ) );
+            StartBrew( TimeSpan.FromMinutes( 7 ) );
             this.SendEvent( BrewMasterEventType.BrewStart );
         }
 
         public void StartHalfBrew()
         {
-            StartBrew( TimeSpan.FromMinutes( 1 ) );
+            StartBrew( TimeSpan.FromMinutes( 5 ) );
             this.SendEvent( BrewMasterEventType.BrewStart );
         }
 

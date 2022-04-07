@@ -7,6 +7,8 @@ using BrewMasterWeb.Models;
 using BrewMasterWeb.Services;
 using BrewMasterWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using SECC.Rock.Authentication;
+using SECC.Rock.RockInterface;
 
 namespace BrewMasterWeb.Controllers
 {
@@ -14,9 +16,14 @@ namespace BrewMasterWeb.Controllers
     {
 
         ICoffeeMakerService _coffeeMakerService;
-        public APIController( ICoffeeMakerService coffeeMakerService )
+        IRockAuthService _rockAuthService;
+        IRockClient _rockClient;
+
+        public APIController( ICoffeeMakerService coffeeMakerService, IRockAuthService rockAuthService, IRockClient rockClient )
         {
             _coffeeMakerService = coffeeMakerService;
+            _rockAuthService = rockAuthService;
+            _rockClient = rockClient;
         }
 
         public IActionResult Index()
@@ -32,6 +39,11 @@ namespace BrewMasterWeb.Controllers
 
         public async Task<IActionResult> CoffeeMakersForPerson(string personToken )
         {
+            if (!await _rockAuthService.CanAdministrate(personToken))
+            {
+                throw new Exception( "No!" );
+            }
+
             List<CoffeeMakerPersonViewModel> coffeeMakers = await _coffeeMakerService.ForPerson( personToken );
             return Json( coffeeMakers );
         }
