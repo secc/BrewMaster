@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Timers;
 using BrewMaster.Messaging;
 using Xamarin.Forms;
@@ -27,16 +28,16 @@ namespace BrewMaster.ViewModels
 
         }
 
-        public void StartFullBrew()
+        public async Task StartFullBrew()
         {
             StartBrew( TimeSpan.FromMinutes( 7 ) );
-            this.SendEvent( BrewMasterEventType.BrewStart );
+            await this.SendEvent( BrewMasterEventType.BrewStart );
         }
 
-        public void StartHalfBrew()
+        public async Task StartHalfBrew()
         {
             StartBrew( TimeSpan.FromMinutes( 5 ) );
-            this.SendEvent( BrewMasterEventType.BrewStart );
+            await this.SendEvent( BrewMasterEventType.BrewStart );
         }
 
         private void StartBrew( TimeSpan brewLength )
@@ -44,6 +45,7 @@ namespace BrewMaster.ViewModels
             HasFinishedBrewing = false;
             BrewStartDateTime = DateTime.Now;
             BrewDateTime = DateTime.Now + brewLength;
+            OldCoffeeTitle = "Old";
         }
 
         public DateTime BrewStartDateTime { get; set; }
@@ -71,6 +73,11 @@ namespace BrewMaster.ViewModels
             {
                 IsOld = false;
                 IsFresh = true;
+            }
+
+            if ( diff > TimeSpan.FromHours( 8 ) )
+            {
+                OldCoffeeTitle = "Ancient";
             }
 
             TimeString = diff.ToString();
@@ -124,7 +131,7 @@ namespace BrewMaster.ViewModels
                 seconds = "0" + seconds;
             }
 
-            seconds = seconds.Substring(0,2);
+            seconds = seconds.Substring( 0, 2 );
 
             Seconds = seconds;
 
@@ -141,10 +148,10 @@ namespace BrewMaster.ViewModels
             }
         }
 
-        private void HandleFinishedBrewing()
+        private async Task HandleFinishedBrewing()
         {
             HasFinishedBrewing = true;
-            this.SendEvent( BrewMasterEventType.BrewComplete );
+            await this.SendEvent( BrewMasterEventType.BrewComplete );
         }
 
         private double dropLeft = 0;
@@ -334,6 +341,18 @@ namespace BrewMaster.ViewModels
             {
                 _coffeeAge = value;
                 PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "CoffeeAge" ) );
+            }
+        }
+
+        private string _oldCoffeeTitle = "Old";
+
+        public string OldCoffeeTitle
+        {
+            get => _oldCoffeeTitle;
+            set
+            {
+                _oldCoffeeTitle = value;
+                PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( "OldCoffeeTitle" ) );
             }
         }
 
