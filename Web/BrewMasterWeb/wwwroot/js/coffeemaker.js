@@ -27,7 +27,8 @@ class CustomCoffeeMaker extends HTMLElement {
                                     </div>
                                 </v-col>
                                 <v-col cols="4" class="text-right">
-                                    <v-switch v-model="coffeeMaker.isActive" color="green" @change="toggleCoffeeMaker(coffeeMaker, personToken)"
+                                    <v-switch v-model="coffeeMaker.isActive" color="green" v-if="isAdmin==true"
+                                        @change="toggleCoffeeMaker(coffeeMaker, personToken)"
                                         hide-details class="float-right mt-1"></v-switch>
                                     <v-btn rounded icon color="grey" v-on:click="edit(coffeeMaker)" class="float-right" v-if="isAdmin==true">
                                         <i class="fa fa-pencil"></i>
