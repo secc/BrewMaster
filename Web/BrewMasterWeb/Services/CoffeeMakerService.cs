@@ -97,6 +97,15 @@ namespace BrewMasterWeb.Services
             await subscriptionService.AddAsync( subscription, subscription.Id );
         }
 
+        public async Task ToggleActive( CoffeeMakerToggleActiveViewModel toggleActiveViewModel )
+        {
+            var coffeeMakerService = _containerFactory.GetService<CoffeeMaker>();
+            var coffeeMaker = await coffeeMakerService.GetAsync( toggleActiveViewModel.Id );
+            coffeeMaker.IsHidden = !toggleActiveViewModel.IsActive;
+
+            await coffeeMakerService.UpdateAsync( coffeeMaker.Id, coffeeMaker );
+        }
+
         public async Task Unsubscribe( CoffeeMakerSubscribeViewModel makerSubscribe )
         {
             List<int> personAliasIds = await GetAliasIdsForPerson( makerSubscribe.PersonToken );
@@ -122,12 +131,20 @@ namespace BrewMasterWeb.Services
             }
         }
 
+        public async Task UpdateName( CoffeeMakerNameUpdateViewModel nameUpdateViewModel )
+        {
+            var coffeeMakerService = _containerFactory.GetService<CoffeeMaker>();
+            var coffeeMaker = await coffeeMakerService.GetAsync( nameUpdateViewModel.Id );
+            coffeeMaker.Name = nameUpdateViewModel.Name;
+
+            await coffeeMakerService.UpdateAsync( coffeeMaker.Id, coffeeMaker );
+        }
+
         private async Task<List<int>> GetAliasIdsForPerson( string personToken )
         {
-            var template = $@"{{% assign person =  '{personToken}' | PersonTokenRead -%}}
-[{{% for alias in person.Aliases %}} {{{{alias.Id}}}}, {{% endfor %}} {{{{person.PrimaryAliasId}}}}]";
+            var person = await _rockClient.GetPersonByToken( personToken );
+            return person?.AliasIds;
 
-            return await _rockClient.RunLava<List<int>>( template );
         }
     }
 }

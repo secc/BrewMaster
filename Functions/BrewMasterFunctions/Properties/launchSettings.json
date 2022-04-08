@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "BrewMasterFunctions": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SharedAccessKey": "EmissaryClientLibrary",
+        "SharedSecretKey": "gtVZIKXq1QHjSmqhl9WhVYYUr+0bIk9/oIIb9zuhy7Q=",
+        "BrewMasterServiceBusConnectionString": "Endpoint=sb://brewmaster.servicebus.windows.net/;SharedAccessKeyName=functions;SharedAccessKey=243IPaXurt6wnUw1QqZCbL+PXJudjmlxM/qYdJK0qT8=",
+        "CosmosDbKey": "TtLkVXTbI49L1NukF740F47SV4q0MXVTjay8G2LgUJk6NAwUtTkBBx6viIgVjydjweWnB94P6ZY49OnOG6N1VA==",
+        "CosmosDbUrl": "https://brewmasterdb.documents.azure.com:443/"
+      }
+    }
+  }
+}

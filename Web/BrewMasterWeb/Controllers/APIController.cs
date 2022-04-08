@@ -37,15 +37,56 @@ namespace BrewMasterWeb.Controllers
             return Json( coffeeMakers );
         }
 
-        public async Task<IActionResult> CoffeeMakersForPerson(string personToken )
+        public async Task<IActionResult> CoffeeMakersForPerson( string personToken )
         {
-            if (!await _rockAuthService.CanAdministrate(personToken))
+            List<CoffeeMakerPersonViewModel> coffeeMakers = await _coffeeMakerService.ForPerson( personToken );
+
+            var isAdmin = await _rockAuthService.CanAdministrate( personToken );
+
+            if ( !isAdmin )
             {
-                throw new Exception( "No!" );
+                coffeeMakers = coffeeMakers.Where( c => c.IsActive == true ).ToList();
             }
 
-            List<CoffeeMakerPersonViewModel> coffeeMakers = await _coffeeMakerService.ForPerson( personToken );
-            return Json( coffeeMakers );
+            var output = new Dictionary<string, object>
+            {
+                { "coffeeMakers", coffeeMakers },
+                {"isAdmin", isAdmin }
+            };
+
+            return Json( output );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateName( [FromForm] CoffeeMakerNameUpdateViewModel nameUpdateViewModel )
+        {
+            if ( await _rockAuthService.CanAdministrate( nameUpdateViewModel.PersonToken ) )
+            {
+                await _coffeeMakerService.UpdateName( nameUpdateViewModel );
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleCoffeeMaker( [FromForm] CoffeeMakerToggleActiveViewModel toggleActiveViewModel )
+        {
+            if ( await _rockAuthService.CanAdministrate( toggleActiveViewModel.PersonToken ) )
+            {
+                await _coffeeMakerService.ToggleActive( toggleActiveViewModel );
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+
+            return NoContent();
         }
 
         [HttpPost]

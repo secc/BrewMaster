@@ -11,6 +11,9 @@ namespace BrewMasterWeb.Services
         Task<List<CoffeeMakerPersonViewModel>> ForPerson( string personToken );
         Task Subscribe( CoffeeMakerSubscribeViewModel makerSubscribe );
         Task Unsubscribe( CoffeeMakerSubscribeViewModel makerSubscribe );
+
+        Task UpdateName( CoffeeMakerNameUpdateViewModel nameUpdateViewModel );
         Task<bool> CanAdministrate( string personToken );
+        Task ToggleActive( CoffeeMakerToggleActiveViewModel toggleActiveViewModel );
     }
 }

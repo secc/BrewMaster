@@ -16,29 +16,35 @@ class CustomCoffeeMaker extends HTMLElement {
                     </v-col>
                 </v-row>
             </v-container>
-            <v-container v-else>
+            <v-container v-else flex>
                 <v-row>
                     <v-col cols="12" md="4"  v-for="coffeeMaker in coffeeMakers" :key="coffeeMaker.id">
-                        <v-card class="mx-auto" max-width="344" outlined >
+                        <v-card class="mx-auto" outlined >
                             <v-row>
-                                <v-col cols="9">
-                                    <div class="text-overline mb-4">
-                                        Coffee Maker
+                                <v-col cols="8">
+                                    <div class="text-overline mb-4 ml-2">
+                                        Coffee Maker <span v-if="coffeeMaker.isActive!=true">- NOT PUBLICLY VIEWABLE</span>
                                     </div>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn rounded icon color="grey">
+                                <v-col cols="4" class="text-right">
+                                    <v-switch v-model="coffeeMaker.isActive" color="green" @change="toggleCoffeeMaker(coffeeMaker, personToken)"
+                                        hide-details class="float-right mt-1"></v-switch>
+                                    <v-btn rounded icon color="grey" v-on:click="edit(coffeeMaker)" class="float-right" v-if="isAdmin==true">
                                         <i class="fa fa-pencil"></i>
                                     </v-btn>
                                 </v-cols>
-                            </v-row>
+                            </v-row class="ml-4">
                             <v-list-item three-line>
                                 <v-list-item-content>
-                                    <v-list-item-title class="text-h5 mb-1">
+                                    <v-text-field v-if="itemEditing == coffeeMaker.id" v-model="coffeeMaker.name"
+                                      label="Coffee Maker Name" :rules="required" hide-details="auto" class="text-h5"
+                                      v-on:change="updateName(coffeeMaker, personToken)" >
+                                    </v-text-field>
+                                    <v-list-item-title class="text-h5 mb-1" v-else>
                                         {{coffeeMaker.name}}
                                     </v-list-item-title>
                                     <v-list-item-subtitle>
-                                        Last Brewed:  {{coffeeMaker.lastCompeteDateTime}}
+                                        Last brewed  {{coffeeMaker.lastBrewTime}} ago
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
@@ -73,7 +79,13 @@ class CustomCoffeeMaker extends HTMLElement {
             data: {
                 coffeeMakers: null,
                 personToken: this.getAttribute("data-person-token"),
-                itemLoading: undefined
+                itemLoading: undefined,
+                itemEditing: undefined,
+                isAdmin: false,
+                required: [
+                    value => !!value || 'Required.',
+                    value => (value && value.length >= 3) || 'Min 3 characters',
+                ]
             },
             methods: {
                 subscribe: function (coffeeMaker, personToken) {
@@ -97,6 +109,33 @@ class CustomCoffeeMaker extends HTMLElement {
                             }
                             coffeeMaker.isSubscribed = false;
                         });
+                },
+                edit: function (coffeeMaker) {
+                    if (this.itemEditing === coffeeMaker.id) {
+                        this.itemEditing = undefined;
+                    }
+                    else {
+                        this.itemEditing = coffeeMaker.id;
+                    }
+                },
+                updateName: function (coffeeMaker,personToken) {
+                    var payload = {
+                        "id": coffeeMaker.id,
+                        "name": coffeeMaker.name,
+                        "personToken":personToken
+                    };
+
+                    $.post("/api/updatename", payload);
+                    this.itemEditing = undefined;
+                },
+                toggleCoffeeMaker: function (coffeeMaker, personToken) {
+                    var payload = {
+                        "id": coffeeMaker.id,
+                        "isActive": coffeeMaker.isActive,
+                        "personToken": personToken
+                    };
+
+                    $.post("/api/toggleCoffeeMaker", payload);
                 }
             }
         });
@@ -105,7 +144,8 @@ class CustomCoffeeMaker extends HTMLElement {
 
     GetContent(vue) {
         $.getJSON(baseUrl + "/api/coffeemakersforperson?persontoken=" + vue.personToken, function (data) {
-            vue.coffeeMakers = data;
+            vue.coffeeMakers = data.coffeeMakers;
+            vue.isAdmin = data.isAdmin
         });
     }
 }

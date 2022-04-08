@@ -10,5 +10,6 @@ namespace BrewMasterWeb.Models
         public string Name { get; set; }
         public DateTime LastStartDateTime { get; set; }
         public DateTime LastCompeteDateTime { get; set; }
+        public bool? IsHidden { get; set; }
     }
 }
