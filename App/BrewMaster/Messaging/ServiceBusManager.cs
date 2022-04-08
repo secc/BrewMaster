@@ -36,15 +36,7 @@ namespace BrewMaster.Messaging
             var payload = JsonConvert.SerializeObject( brewEvent );
             var client = new ServiceBusClient( connectionString );
             var sender = client.CreateSender( "brewevent" );
-#if DEBUG
             await sender.SendMessageAsync( new ServiceBusMessage( payload ) );
-#else
-            try {
-                sender.SendMessageAsync( new ServiceBusMessage( payload ) );
-            } catch {
-            return false;}
-            
-#endif
             return true;
         }
 

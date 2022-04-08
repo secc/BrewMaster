@@ -91,9 +91,20 @@ namespace BrewMaster.ViewModels
                 Status = "Ready";
             }
 
-            Hours = diff.Hours.ToString();
+            if ( hasFinishedBrewing )
+            {
+                Hours = diff.Hours.ToString();
+            }
+            else
+            {
+                Hours = diff.Minutes.ToString();
+            }
 
             var minutes = diff.Minutes.ToString();
+            if ( !hasFinishedBrewing )
+            {
+                minutes = diff.Seconds.ToString();
+            }
 
             while ( minutes.Length < 2 )
             {
@@ -103,11 +114,17 @@ namespace BrewMaster.ViewModels
             Minutes = minutes;
 
             var seconds = diff.Seconds.ToString();
+            if ( !hasFinishedBrewing )
+            {
+                seconds = diff.Milliseconds.ToString();
+            }
 
             while ( seconds.Length < 2 )
             {
                 seconds = "0" + seconds;
             }
+
+            seconds = seconds.Substring(0,2);
 
             Seconds = seconds;
 

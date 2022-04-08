@@ -6,42 +6,42 @@
 
     <Grid>
         <StackLayout HorizontalOptions="Start">
-         <Image Source="Drop" Aspect="AspectFit" HeightRequest="40" WidthRequest="40" Margin="{Binding DropLocation}"/>
+            <Image Source="Drop" Aspect="AspectFit" HeightRequest="40" WidthRequest="40" Margin="{Binding DropLocation}"/>
         </StackLayout>
         <Image Source="BackgroundAnim" Aspect="Fill" Margin="{Binding BrewLocation}" IsVisible="True" HeightRequest="800"/>
-    <StackLayout Spacing="0" x:Name="slMain">
-        <StackLayout x:Name="slCountdown"  IsVisible="{Binding IsFresh}" HorizontalOptions="CenterAndExpand">
-            <Label x:Name="lStatus" Text="{Binding Status}" FontFamily="Marker Felt" TextColor="#ece0d1"
+        <StackLayout Spacing="0" x:Name="slMain">
+            <StackLayout x:Name="slCountdown"  IsVisible="{Binding IsFresh}" HorizontalOptions="CenterAndExpand">
+                <Label x:Name="lStatus" Text="{Binding Status}" FontFamily="Marker Felt" TextColor="#ece0d1"
                    FontSize="150" HorizontalTextAlignment="Center" />
-            <StackLayout Orientation="Horizontal" Margin="0,-0,0,0" HorizontalOptions="Center">
-                <Label x:Name="lNegative" Text="{Binding Negative}" FontSize="100" FontFamily="Marker Felt" TextColor="#DBC1AC"/>
-                <Label x:Name="lHours" Text="{Binding Hours}" FontSize="100" FontFamily="Marker Felt" TextColor="#DBC1AC"/>
-                <Label x:Name="lHMDiv" Text=":" FontSize="100" FontFamily="Marker Felt" Margin="0,-5,0,0" TextColor="#DBC1AC"/>
-                <Label x:Name="lMinutes" Text="{Binding Minutes}" FontSize="100" WidthRequest="120"
+                <StackLayout Orientation="Horizontal" Margin="0,-0,0,0" HorizontalOptions="Center">
+                    <Label x:Name="lNegative" Text="{Binding Negative}" FontSize="100" FontFamily="Marker Felt" TextColor="#DBC1AC"/>
+                    <Label x:Name="lHours" Text="{Binding Hours}" FontSize="100" FontFamily="Marker Felt" TextColor="#DBC1AC"/>
+                    <Label x:Name="lHMDiv" Text=":" FontSize="100" FontFamily="Marker Felt" Margin="0,-5,0,0" TextColor="#DBC1AC"/>
+                    <Label x:Name="lMinutes" Text="{Binding Minutes}" FontSize="100" WidthRequest="120"
                        FontFamily="Marker Felt" HorizontalTextAlignment="Center" TextColor="#DBC1AC"/>
-                <Label x:Name="lSeconds" Text="{Binding Seconds}" FontSize="55" WidthRequest="70"
+                    <Label x:Name="lSeconds" Text="{Binding Seconds}" FontSize="55" WidthRequest="70"
                        Margin="0,40,0,0" FontFamily="Marker Felt" TextColor="#DBC1AC"/>
+                </StackLayout>
+                <Label Text="Tap Screen to Start New Brew or for Information" Margin="0,0,0,0" HorizontalTextAlignment="Center" FontFamily="Futura" TextColor="#DBC1AC"/>
             </StackLayout>
-             <Label Text="Tap Screen to Start New Brew or for Information" Margin="0,0,0,0" HorizontalTextAlignment="Center" FontFamily="Futura" TextColor="#DBC1AC"/>
-        </StackLayout>
-         <StackLayout x:Name="slOldCoffee" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="0,-10,0,0"
+            <StackLayout x:Name="slOldCoffee" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="0,-10,0,0"
                       Spacing="0" IsVisible="{Binding IsOld}">
-             <Label x:Name="lOld" FontSize="150" Text="OLD" HorizontalOptions="CenterAndExpand"
+                <Label x:Name="lOld" FontSize="150" Text="OLD" HorizontalOptions="CenterAndExpand"
                     Margin="0" FontFamily="Futura" TextColor="#DFB78C"/>
-             <Label x:Name="lCoffee" FontSize="100" Text="COFFEE" HorizontalOptions="CenterAndExpand"
+                <Label x:Name="lCoffee" FontSize="100" Text="COFFEE" HorizontalOptions="CenterAndExpand"
                     Margin="0,-54,0,0" FontFamily="Futura" TextColor="#DFB78C"/>
-             <Label x:Name="lOldCoffeeTimer" Text="{Binding CoffeeAge, StringFormat='This coffee is over {0} old'}" FontSize="20" Margin="0,-0,0,0"
+                <Label x:Name="lOldCoffeeTimer" Text="{Binding CoffeeAge, StringFormat='This coffee is over {0} old'}" FontSize="20" Margin="0,-0,0,0"
                     HorizontalOptions="Center" FontFamily="Futura" TextColor="#DFB78C"/>
-             <Label x:Name="lOldCoffeeInstructions" Text="Please tap the screen after starting a new pot." HorizontalOptions="Center"
+                <Label x:Name="lOldCoffeeInstructions" Text="Please tap the screen after starting a new pot." HorizontalOptions="Center"
                     FontFamily="Futura" TextColor="#DFB78C"/>
-         </StackLayout>
+            </StackLayout>
 
-        <StackLayout.GestureRecognizers>
-            <TapGestureRecognizer
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer
                 Tapped="TapGestureRecognizer_Tapped"
                 NumberOfTapsRequired="1" />
-        </StackLayout.GestureRecognizers>
-    </StackLayout>
+            </StackLayout.GestureRecognizers>
+        </StackLayout>
     </Grid>
 
 </ContentPage>
