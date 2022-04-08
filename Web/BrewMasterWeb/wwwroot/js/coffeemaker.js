@@ -1,4 +1,4 @@
-﻿const baseUrl = "http://localhost:14335";
+﻿const baseUrl = "https://brewmasterweb.azurewebsites.net";
 
 class CustomCoffeeMaker extends HTMLElement {
 
@@ -125,7 +125,7 @@ class CustomCoffeeMaker extends HTMLElement {
                         "personToken":personToken
                     };
 
-                    $.post("/api/updatename", payload);
+                    $.post(baseUrl + "/api/updatename", payload);
                     this.itemEditing = undefined;
                 },
                 toggleCoffeeMaker: function (coffeeMaker, personToken) {
@@ -135,7 +135,7 @@ class CustomCoffeeMaker extends HTMLElement {
                         "personToken": personToken
                     };
 
-                    $.post("/api/toggleCoffeeMaker", payload);
+                    $.post(baseUrl + "/api/toggleCoffeeMaker", payload);
                 }
             }
         });
